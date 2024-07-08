@@ -28,7 +28,7 @@
     "url": "https://github.com/JUMO-GmbH-Co-KG/node-red-varitron.git"
   },
   "dependencies": {
-    "@jumo.net/varitron-process-values": "1.0.19"
+    "@jumo.net/varitron-process-values": "1.0.20"
   },
   "publishConfig": {
     "@jumo.net:registry": "https://registry.npmjs.org",
