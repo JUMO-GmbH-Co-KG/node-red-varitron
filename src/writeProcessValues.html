@@ -1,0 +1,137 @@
+<script type="text/html" data-template-name="write process values">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node.label.name"></span></label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-selector"><i class="fa fa-sign-in"></i> <span data-i18n="node.label.selector"></span></label>
+        <input type="text" id="node-input-selector" style="width:66%;">
+        <a id="node-input-lookup-process-values" class="red-ui-button"><i id="node-input-lookup-process-values-icon" class="fa fa-search"></i></a>
+    </div>
+    <div class="form-row">
+        <label for="node-input-processvalue"><i class="fa fa-th"></i> <span data-i18n="node.label.processvalue"></span></label>
+        <input type="text" id="node-input-processvalue" placeholder="payload">
+        <input type="hidden" id="node-input-processvaluefieldtype">
+    </div>
+</script>
+
+<style>
+    .ui-autocomplete-category {
+        font-weight: bold;
+        padding: .2em .4em;
+        margin: .8em 0 .2em;
+        line-height: 1.5;
+    }
+</style>
+
+<script type="text/javascript">
+    RED.nodes.registerType('write process values', {
+        category: 'JUMO variTRON',
+        color: '#1789E6',
+        inputs: 1,
+        outputs: 1,
+        defaults: {
+            name: { value: "" },
+            selector: { value: "" },
+            processvalue: { value: "payload" },
+            processvaluefieldtype: { value: "msg" },
+        },
+        icon: "input-wt.png",
+        label: function () {
+            function shortenUrl(selector) {
+                const selectorParts = selector.split('#');
+                if (selectorParts.length < 5) return '';
+
+                // if category is equal to subcategory or subcategory is "SharedMemory", then only show category
+                function getCleanCategory(category, subcategory) {
+                    if (category.toLowerCase() == subcategory.toLowerCase() || subcategory.toLowerCase() == 'sharedmemory') {
+                        return category;
+                    }
+                    return `${category}/${subcategory}`;
+                }
+
+                const category = getCleanCategory(selectorParts[1], selectorParts[3]);
+                const name = selectorParts[4];
+
+                return `${name} @ ${category}`;
+            }
+            return this.name || shortenUrl(this.selector) || "write process values";
+        },
+        oneditprepare: function () {
+            $("#node-input-processvalue").typedInput({
+                type: 'str',
+                types: ['msg', 'str', 'num', 'bool'],
+                typeField: "#node-input-processvaluefieldtype"
+            });
+
+            try {
+                $("#node-input-selector").autocomplete("destroy");
+            } catch (err) {
+            }
+
+            // on search button click
+            $("#node-input-lookup-process-values").click(function () {
+                // disable button
+                $("#node-input-lookup-process-values").addClass('disabled');
+
+                // change icon to hourglass
+                $("#node-input-lookup-process-values-icon").removeClass('fa-search');
+                $("#node-input-lookup-process-values-icon").addClass('fa-hourglass-start');
+
+                // get process value list via http request
+                $.getJSON('process-value-description', function (data) {
+                    // enable button
+                    $("#node-input-lookup-process-values").removeClass('disabled');
+
+                    // change icon to search
+                    $("#node-input-lookup-process-values-icon").removeClass('fa-hourglass-start');
+                    $("#node-input-lookup-process-values-icon").addClass('fa-search');
+
+                    // create custom autocomplete widget
+                    $.widget("custom.catcomplete", $.ui.autocomplete, {
+                        // override _renderMenu to make categories non-selectable
+                        _create: function () {
+                            this._super();
+                            this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
+                        },
+                        // override _renderMenu to format categories
+                        _renderMenu: function (ul, items) {
+                            var that = this;
+                            var currentCategory = "";
+                            $.each(items, function (index, item) {
+                                var li;
+                                if (item.category != currentCategory) {
+                                    ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+                                    currentCategory = item.category;
+                                }
+                                li = that._renderItemData(ul, item);
+                                if (item.category) {
+                                    li.attr("aria-label", item.category + " : " + item.label);
+                                }
+                            });
+                        }
+                    });
+
+                    const source = data || [];
+                    $("#node-input-selector").catcomplete({
+                        minLength: 0,   // show menu also with empty search string
+                        delay: 0,       // show menu immediately
+                        source,
+                        // add selector to input field on focus and select
+                        focus: function (event, ui) {
+                            $("#node-input-selector").val(ui.item.selector);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#node-input-selector").val(ui.item.selector);
+                            return false;
+                        },
+                        close: function (event, ui) {
+                            $("#node-input-selector").autocomplete("destroy");
+                        }
+                    }).catcomplete("search", "");    // show menu immediately
+                });
+            });
+        }
+    });
+</script>

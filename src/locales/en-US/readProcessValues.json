@@ -1,0 +1,8 @@
+{
+    "node": {
+        "label": {
+            "name": "Name",
+            "selector": "Selector"
+        }
+    }
+}

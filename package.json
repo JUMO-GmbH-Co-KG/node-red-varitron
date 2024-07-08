@@ -1,0 +1,42 @@
+{
+  "name": "@jumo.net/node-red-varitron",
+  "version": "1.0.19",
+  "description": "Node-RED node collection for accessing and monitoring the JUMO variTRON system",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "node-red": {
+    "version": ">=1.0.0",
+    "nodes": {
+      "browse process values": "src/browseProcessValues.js",
+      "read process values": "src/readProcessValues.js",
+      "write process values": "src/writeProcessValues.js"
+    }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "node-red",
+    "jumo",
+    "varitron"
+  ],
+  "license": "MIT",
+  "author": "JUMO GmbH & Co. KG",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JUMO-GmbH-Co-KG/node-red-varitron.git"
+  },
+  "dependencies": {
+    "@jumo.net/varitron-process-values": "1.0.19"
+  },
+  "publishConfig": {
+    "@jumo.net:registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {}
+}

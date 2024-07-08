@@ -1,0 +1,27 @@
+<script type="text/html" data-help-name="write process values">
+    <p>This nodes lets you write the process values to a device of the JUMO variTRON series.<br>
+    You can either enter the data at the node configuration or inject it via the node input.
+
+        <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>payload
+                <span class="property-type">string | number | boolean | array</span>
+            </dt>
+            <dd>The value to write to the variTRON system. Either a single value or an array of objects containing a <b>selector</b> and a <b>value</b> in the following format:<br>
+                <b>{
+                    "selector": "ProcessData#DataBaseManagement#ProcessData#DatabaseManagement#MemoryAlarm",
+                    "value": false
+                }</b>
+            </dd>
+        
+            <dt class="optional">selector
+                <span class="property-type">string</span>
+            </dt>
+            <dd>When not injecting an array as payload this node needs a selector as <b>string</b>, for example: <b>ProcessData#DataBaseManagement#ProcessData#DatabaseManagement#MemoryAlarm</b>
+            </dd>
+        </dl>
+
+        <h3>Outputs</h3>
+        <p>This node outputs if the value is written successfully or not.</p>
+    </p>
+</script>

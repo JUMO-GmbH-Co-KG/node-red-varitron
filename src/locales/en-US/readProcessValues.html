@@ -1,0 +1,26 @@
+<script type="text/html" data-help-name="read process values">
+    <p>This nodes lets you read the process values on a device of the JUMO variTRON series.<br>
+    You can either enter the data at the node configuration or inject it via the node input.
+        
+        <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>selector
+                <span class="property-type">string | array</span>
+            </dt>
+            <dd>A process value selector as <b>string</b>, for example: <b>ProcessData#DataBaseManagement#ProcessData#DatabaseManagement#MemoryAlarm</b><br>
+                Or an <b>array of strings</b> in the same format.</p></dd>
+        </dl>
+        
+        <h3>Outputs</h3>
+        <p>Based on the input this node outputs an object or an array of objects with the following propertys:
+            <ul>
+                <li>selector</li>
+                <li>value</li>
+                <li>type</li>
+                <li>readOnly</li>
+                <li>unit</li>
+                <li>error - object with propertys errorCode and errorText</li>
+            </ul>
+        </p>
+    </p>
+</script>

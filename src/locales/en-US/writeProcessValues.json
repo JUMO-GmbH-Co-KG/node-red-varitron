@@ -1,0 +1,9 @@
+{
+    "node": {
+        "label": {
+            "name": "Name",
+            "selector": "Selector",
+            "processvalue": "Value"
+        }
+    }
+}
