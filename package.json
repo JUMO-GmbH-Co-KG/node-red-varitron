@@ -1,6 +1,6 @@
 {
   "name": "@jumo.net/node-red-varitron",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Node-RED node collection for accessing and monitoring the JUMO variTRON system",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
